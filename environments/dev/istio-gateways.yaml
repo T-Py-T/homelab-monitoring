@@ -1,3 +1,5 @@
+# Updated Monitoring Gateways with Environment Support
+
 # Grafana Gateway
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
@@ -13,7 +15,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - grafana.dev.cluster.local
+    - grafana.dev.cluster.local  # Environment-specific
 
 ---
 apiVersion: networking.istio.io/v1beta1
@@ -23,7 +25,7 @@ metadata:
   namespace: monitoring
 spec:
   hosts:
-  - grafana.dev.cluster.local
+  - grafana.dev.cluster.local  # Environment-specific
   gateways:
   - grafana-gateway
   http:
@@ -52,7 +54,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - prometheus.dev.cluster.local
+    - prometheus.dev.cluster.local  # Environment-specific
 
 ---
 apiVersion: networking.istio.io/v1beta1
@@ -62,7 +64,7 @@ metadata:
   namespace: monitoring
 spec:
   hosts:
-  - prometheus.dev.cluster.local
+  - prometheus.dev.cluster.local  # Environment-specific
   gateways:
   - prometheus-gateway
   http:
@@ -91,7 +93,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - alertmanager.dev.cluster.local
+    - alertmanager.dev.cluster.local  # Environment-specific
 
 ---
 apiVersion: networking.istio.io/v1beta1
@@ -101,7 +103,7 @@ metadata:
   namespace: monitoring
 spec:
   hosts:
-  - alertmanager.dev.cluster.local
+  - alertmanager.dev.cluster.local  # Environment-specific
   gateways:
   - alertmanager-gateway
   http:
