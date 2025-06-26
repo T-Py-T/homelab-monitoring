@@ -1,0 +1,38 @@
+# Promtail Log Collection Values
+config:
+  serverPort: 3101
+  clients:
+    - url: http://loki:3100/loki/api/v1/push
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+  limits:
+    memory: 256Mi
+    cpu: 200m
+
+# Deploy as DaemonSet to collect logs from all nodes
+daemonset:
+  enabled: true
+
+# Service Monitor for Prometheus
+serviceMonitor:
+  enabled: true
+
+# Collect logs from these paths
+defaultVolumes:
+  - name: containers
+    hostPath:
+      path: /var/lib/docker/containers
+  - name: pods
+    hostPath:
+      path: /var/log/pods
+
+defaultVolumeMounts:
+  - name: containers
+    mountPath: /var/lib/docker/containers
+    readOnly: true
+  - name: pods
+    mountPath: /var/log/pods
+    readOnly: true

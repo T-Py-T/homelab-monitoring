@@ -1,0 +1,74 @@
+# ServiceMonitors to scrape metrics from infrastructure services
+
+# Istio Control Plane Monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: istio-system
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: istiod
+  namespaceSelector:
+    matchNames:
+    - istio-system
+  endpoints:
+  - port: http-monitoring
+    interval: 30s
+    path: /stats/prometheus
+
+---
+# Vault Monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vault
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  namespaceSelector:
+    matchNames:
+    - vault
+  endpoints:
+  - port: http
+    interval: 30s
+    path: /v1/sys/metrics?format=prometheus
+
+---
+# ArgoCD Monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-metrics
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-metrics
+  namespaceSelector:
+    matchNames:
+    - argocd
+  endpoints:
+  - port: metrics
+    interval: 30s
+
+---
+# ArgoCD Server Monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-server-metrics
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server-metrics
+  namespaceSelector:
+    matchNames:
+    - argocd
+  endpoints:
+  - port: metrics
+    interval: 30s

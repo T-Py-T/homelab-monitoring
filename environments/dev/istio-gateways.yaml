@@ -1,0 +1,115 @@
+# Grafana Gateway
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: grafana-gateway
+  namespace: monitoring
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - grafana.dev.cluster.local
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: grafana-vs
+  namespace: monitoring
+spec:
+  hosts:
+  - grafana.dev.cluster.local
+  gateways:
+  - grafana-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: prometheus-stack-grafana.monitoring.svc.cluster.local
+        port:
+          number: 80
+
+---
+# Prometheus Gateway
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: prometheus-gateway
+  namespace: monitoring
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - prometheus.dev.cluster.local
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: prometheus-vs
+  namespace: monitoring
+spec:
+  hosts:
+  - prometheus.dev.cluster.local
+  gateways:
+  - prometheus-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local
+        port:
+          number: 9090
+
+---
+# AlertManager Gateway
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: alertmanager-gateway
+  namespace: monitoring
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - alertmanager.dev.cluster.local
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: alertmanager-vs
+  namespace: monitoring
+spec:
+  hosts:
+  - alertmanager.dev.cluster.local
+  gateways:
+  - alertmanager-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local
+        port:
+          number: 9093

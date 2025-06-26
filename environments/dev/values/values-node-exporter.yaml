@@ -1,0 +1,19 @@
+# Node Exporter Values
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 50m
+  limits:
+    memory: 128Mi
+    cpu: 100m
+
+service:
+  port: 9100
+  targetPort: 9100
+
+serviceMonitor:
+  enabled: true
+  
+prometheus:
+  monitor:
+    enabled: true

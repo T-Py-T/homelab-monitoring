@@ -1,0 +1,35 @@
+# Blackbox Exporter Values for endpoint monitoring
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 50m
+  limits:
+    memory: 128Mi
+    cpu: 100m
+
+serviceMonitor:
+  enabled: true
+  
+  targets:
+    - name: argocd
+      url: http://argocd.dev.cluster.local
+      module: http_2xx
+    - name: vault
+      url: http://vault.dev.cluster.local
+      module: http_2xx
+    - name: keycloak
+      url: http://keycloak.dev.cluster.local
+      module: http_2xx
+    - name: kibana
+      url: http://kibana.dev.cluster.local
+      module: http_2xx
+
+config:
+  modules:
+    http_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        valid_status_codes: []
+        method: GET

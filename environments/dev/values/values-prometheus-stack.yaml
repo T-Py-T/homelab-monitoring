@@ -1,0 +1,88 @@
+# Prometheus Stack Values (includes Grafana, AlertManager)
+
+# Prometheus Configuration
+prometheus:
+  prometheusSpec:
+    retention: 7d  # Shorter retention for dev
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 250m
+      limits:
+        memory: 1Gi
+        cpu: 500m
+    
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+
+# Grafana Configuration
+grafana:
+  enabled: true
+  
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+  
+  persistence:
+    enabled: true
+    size: 5Gi
+  
+  adminPassword: admin123  # Change for production
+  
+  service:
+    type: ClusterIP
+  
+  ingress:
+    enabled: false  # We'll use Istio Gateway
+
+# AlertManager Configuration
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 200m
+    
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+
+# Node Exporter
+nodeExporter:
+  enabled: true
+
+# kube-state-metrics
+kubeStateMetrics:
+  enabled: true
+
+# Disable some components for dev
+kubeApiServer:
+  enabled: true
+  
+kubeControllerManager:
+  enabled: false  # Not available in K3s
+  
+kubeScheduler:
+  enabled: false  # Not available in K3s
+  
+kubeProxy:
+  enabled: false  # Not used with Cilium
+
+kubelet:
+  enabled: true

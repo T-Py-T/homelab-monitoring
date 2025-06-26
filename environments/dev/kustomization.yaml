@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# ArgoCD will apply this kustomization.yaml file for monitoring
+
+helmCharts:
+# Prometheus Stack (includes Grafana, AlertManager)
+- name: kube-prometheus-stack
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 55.5.0
+  releaseName: prometheus-stack
+  namespace: monitoring
+  valuesFile: ../values/values-prometheus-stack.yaml
+
+# Loki for Log Aggregation
+- name: loki
+  repo: https://grafana.github.io/helm-charts
+  version: 5.36.3
+  releaseName: loki
+  namespace: monitoring
+  valuesFile: ../values/values-loki.yaml
+
+# Promtail for Log Collection
+- name: promtail
+  repo: https://grafana.github.io/helm-charts
+  version: 6.15.3
+  releaseName: promtail
+  namespace: monitoring
+  valuesFile: ../values/values-promtail.yaml
+
+# Node Exporter
+- name: prometheus-node-exporter
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 4.24.0
+  releaseName: node-exporter
+  namespace: monitoring
+  valuesFile: ../values/values-node-exporter.yaml
+
+# Blackbox Exporter for endpoint monitoring
+- name: prometheus-blackbox-exporter
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 8.8.0
+  releaseName: blackbox-exporter
+  namespace: monitoring
+  valuesFile: ../values/values-blackbox-exporter.yaml
+
+resources:
+  - namespaces.yaml
+  - istio-gateways.yaml
+  - servicemonitors.yaml
+
+commonLabels:
+  environment: dev
+  managed-by: argocd
+  component: monitoring
