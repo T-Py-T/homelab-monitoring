@@ -36,8 +36,11 @@ grafana:
     enabled: true
     size: 5Gi
   
-  adminPassword: admin123  # Change for production
-  
+  valueFromRef:
+    secretKeyRef:
+      name: prometheus-secret
+      key: adminPassword
+
   service:
     type: ClusterIP
   
