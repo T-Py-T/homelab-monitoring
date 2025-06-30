@@ -49,7 +49,9 @@ resources:
   - istio-gateways.yaml
   - servicemontitors.yaml
 
-commonLabels:
-  environment: dev
-  managed-by: argocd
-  component: monitoring
+labels:
+  - includeSelectors: true
+    pairs:
+      environment: dev
+      managed-by: argocd
+      component: monitoring
