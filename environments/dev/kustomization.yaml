@@ -47,7 +47,7 @@ helmCharts:
 resources:
   - namespaces.yaml
   - istio-gateways.yaml
-  - servicemonitors.yaml
+  - servicemontitors.yaml
 
 commonLabels:
   environment: dev
