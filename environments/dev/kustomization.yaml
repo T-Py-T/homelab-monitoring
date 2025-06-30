@@ -10,7 +10,7 @@ helmCharts:
   version: 55.5.0
   releaseName: prometheus-stack
   namespace: monitoring
-  valuesFile: ../values/values-prometheus-stack.yaml
+  valuesFile: values/values-prometheus-stack.yaml
 
 # Loki for Log Aggregation
 - name: loki
@@ -18,7 +18,7 @@ helmCharts:
   version: 5.36.3
   releaseName: loki
   namespace: monitoring
-  valuesFile: ../values/values-loki.yaml
+  valuesFile: values/values-loki.yaml
 
 # Promtail for Log Collection
 - name: promtail
@@ -26,7 +26,7 @@ helmCharts:
   version: 6.15.3
   releaseName: promtail
   namespace: monitoring
-  valuesFile: ../values/values-promtail.yaml
+  valuesFile: values/values-promtail.yaml
 
 # Node Exporter
 - name: prometheus-node-exporter
@@ -34,7 +34,7 @@ helmCharts:
   version: 4.24.0
   releaseName: node-exporter
   namespace: monitoring
-  valuesFile: ../values/values-node-exporter.yaml
+  valuesFile: values/values-node-exporter.yaml
 
 # Blackbox Exporter for endpoint monitoring
 - name: prometheus-blackbox-exporter
@@ -42,7 +42,7 @@ helmCharts:
   version: 8.8.0
   releaseName: blackbox-exporter
   namespace: monitoring
-  valuesFile: ../values/values-blackbox-exporter.yaml
+  valuesFile: values/values-blackbox-exporter.yaml
 
 resources:
   - namespaces.yaml
